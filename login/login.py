@@ -27,6 +27,7 @@ class TestCase(unittest.TestCase):
             driver.find_element(By.CLASS_NAME, 'el-button').click()
 
             time.sleep(1)
+            print('测试')
 
             sidebarTitle = driver.find_element(By.CLASS_NAME, 'sidebar-title')
             result = sidebarTitle.text

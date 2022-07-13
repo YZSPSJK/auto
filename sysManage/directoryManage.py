@@ -211,7 +211,7 @@ class TestCase(unittest.TestCase):
                 message = self.driver.find_element(By.CLASS_NAME, 'el-message__content').text
             except Exception as e:
                 message = ''
-            self.assertEqual('删除成功!', message, '删除字典子项成功')
+            self.assertEqual('删除成功!', message, '删除字典子项1成功')
             time.sleep(1)
             childrenTableData = dialogBody.find_elements(By.XPATH,
                                                          '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]')
@@ -231,15 +231,42 @@ class TestCase(unittest.TestCase):
 
             self.driver.find_element(By.XPATH, '//span[text()="字典配置"]').click()
             time.sleep(1)
-            dialogBody.find_element(By.XPATH, '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]//span[text()="删除"]').click()
+
+            dialogBody.find_element(By.XPATH,
+                                    '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]//span[text()="编辑"]').click()
+            formInputs = dialogBody.find_elements(By.XPATH, '//input[@class="el-input__inner"]')
+            formInputs[15].clear()
+            formInputs[15].send_keys('11')
+            formInputs[16].clear()
+            formInputs[16].send_keys('22')
+            formInputs[17].clear()
+            formInputs[17].send_keys('33')
+            formInputs[18].clear()
+            formInputs[18].send_keys('44')
+            saveButton = self.driver.find_elements(By.CSS_SELECTOR,
+                                                   '.el-dialog__footer:nth-child(3) .el-button--primary > span')
+            saveButton[3].click()
+            time.sleep(1)
+            childrenTableData = dialogBody.find_elements(By.XPATH,
+                                                         '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]')
+            for row in childrenTableData:
+                cols = row.find_elements(By.TAG_NAME, 'span')
+                self.assertEqual('字典编号-测试' + str(timestamp), cols[0].text, '编辑字典子项, 字典标签和字典项的字典编号一致')
+                self.assertEqual('11', cols[1].text, '编辑字典子项, 字典编号一致')
+                self.assertEqual('22', cols[2].text, '编辑字典子项, 字典键值一致')
+                self.assertEqual('33', cols[3].text, '编辑字典子项, 字典键值英文一致')
+                self.assertEqual('44', cols[4].text, '编辑字典子项, 字典排序一致')
+
+            dialogBody.find_element(By.XPATH,
+                                    '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]//span[text()="删除"]').click()
             time.sleep(1)
             self.driver.find_element(By.CSS_SELECTOR, '.el-button--default:nth-child(2) > span:nth-child(1)').click()
-            time.sleep(1)
+            time.sleep(2)
             try:
-                message = self.driver.find_elements(By.CLASS_NAME, 'el-message__content')[1].text
+                message = self.driver.find_element(By.CLASS_NAME, 'el-message__content').text
             except Exception as e:
                 message = ''
-            self.assertEqual('删除成功!', message, '删除字典子项成功')
+            self.assertEqual('删除成功!', message, '删除字典子项2成功')
             time.sleep(1)
             childrenTableData = dialogBody.find_elements(By.XPATH,
                                                          '//div[@class="el-dialog__body"]//tr[@class="el-table__row"]')

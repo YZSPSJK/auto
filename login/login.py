@@ -23,12 +23,8 @@ class TestCase(unittest.TestCase):
             passwordInput = driver.find_element(By.NAME, 'password')
             passwordInput.clear()
             passwordInput.send_keys('123456WTW')
-
             driver.find_element(By.CLASS_NAME, 'el-button').click()
-
             time.sleep(1)
-            print('测试')
-
             sidebarTitle = driver.find_element(By.CLASS_NAME, 'sidebar-title')
             result = sidebarTitle.text
         except Exception as e:

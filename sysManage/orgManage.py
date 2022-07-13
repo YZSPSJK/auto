@@ -109,7 +109,7 @@ class TestCase(unittest.TestCase):
             formInputs[12].clear()
             formInputs[12].send_keys('机构全称-测试编辑')
             saveButton = self.driver.find_elements(By.CSS_SELECTOR,
-                                     '.el-dialog__footer:nth-child(3) .el-button--primary > span')
+                                                   '.el-dialog__footer:nth-child(3) .el-button--primary > span')
             saveButton[1].click()
             time.sleep(2)
             el_rows = self.driver.find_elements(By.XPATH, '//tr[@class="el-table__row"]')

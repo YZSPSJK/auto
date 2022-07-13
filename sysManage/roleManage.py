@@ -13,7 +13,7 @@ class TestCase(unittest.TestCase):
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument("--window-size=1920,1080")
-        s = Service('/Users/sjk/workspace/sjk/python/chromedriver')
+        s = Service('D:/python/python/chromedriver.exe')
         self.driver = webdriver.Chrome(service=s, options=chrome_options)
         self.driver.get('http://175.27.232.12:8143/skyrim/#/home')
         self.driver.add_cookie(

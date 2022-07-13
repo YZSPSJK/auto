@@ -9,7 +9,7 @@ class TestCase(unittest.TestCase):
 
     @staticmethod
     def login():
-        s = Service('/Users/sjk/workspace/sjk/python/auto/chromedriver')
+        s = Service('D:/python/python/chromedriver.exe')
         driver = webdriver.Chrome(service=s)
 
         driver.get('http://175.27.232.12:8143/skyrim/#/login?redirect=%2Fhome')

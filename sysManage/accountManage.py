@@ -10,10 +10,11 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         chrome_options = Options()
-        # chrome_options.add_argument('--headless')
-        # chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument("--window-size=1920,1080")
         s = Service('D:/python/python/chromedriver.exe')
+        # s = Service('/Users/sjk/workspace/sjk/python/chromedriver')
         self.driver = webdriver.Chrome(service=s, options=chrome_options)
         self.driver.get('http://175.27.232.12:8143/skyrim/#/home')
         self.driver.add_cookie(
@@ -50,7 +51,7 @@ class TestCase(unittest.TestCase):
             el_rows = self.driver.find_elements(By.XPATH, '//tr[@class="el-table__row"]')
             for row in el_rows:
                 cols = row.find_elements(By.TAG_NAME, 'span')
-                self.assertIn('ceshi', cols[0].text, '根据机构名称查询正确')
+                self.assertIn('ceshi', cols[0].text.lower(), '根据机构名称查询正确')
 
             orgNameInput.clear()
             orgCodeInput.clear()
@@ -60,7 +61,7 @@ class TestCase(unittest.TestCase):
             el_rows = self.driver.find_elements(By.XPATH, '//tr[@class="el-table__row"]')
             for row in el_rows:
                 cols = row.find_elements(By.TAG_NAME, 'span')
-                self.assertIn('1098', cols[3].text, '根据机构编码查询正确')
+                self.assertIn('1098', cols[3].text.lower(), '根据机构编码查询正确')
 
             orgNameInput.clear()
             orgCodeInput.clear()

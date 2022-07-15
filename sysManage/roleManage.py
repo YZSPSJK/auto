@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import unittest
+import logging
 
 
 class TestCase(unittest.TestCase):
@@ -117,7 +118,7 @@ class TestCase(unittest.TestCase):
             self.assertEqual(0, len(el_rows), '根据新增参数,删除按钮点击后查询记录为0')
 
         except Exception as e:
-            print(e)
+            logging.exception(e)
 
     def tearDown(self):
         self.driver.quit()

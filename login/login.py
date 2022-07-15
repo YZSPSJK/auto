@@ -11,8 +11,8 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         chrome_options = Options()
-        # chrome_options.add_argument('--headless')
-        # chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument("--window-size=1920,1080")
         s = Service('D:/python/python/chromedriver.exe')
         # s = Service('/Users/sjk/workspace/sjk/python/chromedriver')

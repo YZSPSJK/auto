@@ -29,7 +29,6 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.XPATH, '//span[text()="系统管理"]').click()
             time.sleep(1)
             self.driver.find_element(By.XPATH, '//span[text()="资源管理"]').click()
-            self.driver.find_elements()
             time.sleep(1)
 
             firstTreeNode = self.driver.find_element(By.CLASS_NAME, 'el-tree-node__label')

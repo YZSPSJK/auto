@@ -2,6 +2,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import unittest
 import logging
 
@@ -10,9 +11,13 @@ class TestCase(unittest.TestCase):
 
     @staticmethod
     def login():
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument("--window-size=1920,1080")
         s = Service('D:/python/python/chromedriver.exe')
         # s = Service('/Users/sjk/workspace/sjk/python/chromedriver')
-        driver = webdriver.Chrome(service=s)
+        driver = webdriver.Chrome(service=s, options=chrome_options)
         driver.get('http://175.27.232.12:8143/skyrim/#/login?redirect=%2Fhome')
         time.sleep(1)
         try:
@@ -28,6 +33,7 @@ class TestCase(unittest.TestCase):
             result = sidebarTitle.text
         except Exception as e:
             result = ''
+            logging.exception(e)
         finally:
             driver.quit()
         return result

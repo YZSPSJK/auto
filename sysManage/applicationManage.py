@@ -29,7 +29,6 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.XPATH, '//span[text()="系统管理"]').click()
             time.sleep(1)
             self.driver.find_element(By.XPATH, '//span[text()="应用管理"]').click()
-            self.driver.find_elements()
             time.sleep(1)
 
             el_form_contents = self.driver.find_elements(By.XPATH, '//div[@class="el-form-item__content"]')

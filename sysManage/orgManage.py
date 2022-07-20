@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import unittest
 import logging
+from BeautifulReport import BeautifulReport
 
 
 class TestCase(unittest.TestCase):
@@ -132,4 +133,9 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestSuite()
+    loader = unittest.TestLoader()
+    suite.addTest(loader.loadTestsFromTestCase(TestCase))
+    br = BeautifulReport(suite)
+    br.report(filename='orgManage.html', description='测试报告',
+              report_dir='/Users/sjk/workspace/sjk/python/auto/testReport')

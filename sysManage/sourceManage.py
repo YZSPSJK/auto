@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import unittest
 import logging
+from BeautifulReport import BeautifulReport
 
 
 class TestCase(unittest.TestCase):
@@ -24,7 +25,7 @@ class TestCase(unittest.TestCase):
         self.driver.refresh()
         time.sleep(1)
 
-    def test_org_manage(self):
+    def test_source_manage(self):
         try:
             self.driver.find_element(By.XPATH, '//span[text()="系统管理"]').click()
             time.sleep(1)
@@ -103,8 +104,6 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.CSS_SELECTOR,
                                      '.el-dialog__footer:nth-child(3) .el-button--primary > span').click()
 
-
-
             time.sleep(2)
             sourceNameInput.clear()
             sourceNameInput.send_keys('资源名称-测试' + str(timestamp))
@@ -136,13 +135,15 @@ class TestCase(unittest.TestCase):
             formInputs[11].click()
             time.sleep(1)
             sourceTypeInterface = self.driver.find_elements(By.XPATH,
-                                                           '//li[@class="el-select-dropdown__item"]/span[text()="接口"]')[2]
+                                                            '//li[@class="el-select-dropdown__item"]/span[text()="接口"]')[
+                2]
             sourceTypeInterface.click()
             time.sleep(1)
             formInputs[14].click()
             time.sleep(1)
             accessLevelApprove = self.driver.find_elements(By.XPATH,
-                                                          '//li[@class="el-select-dropdown__item"]/span[text()="认证访问"]')[1]
+                                                           '//li[@class="el-select-dropdown__item"]/span[text()="认证访问"]')[
+                1]
             accessLevelApprove.click()
             time.sleep(1)
 
@@ -179,4 +180,9 @@ class TestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestSuite()
+    loader = unittest.TestLoader()
+    suite.addTest(loader.loadTestsFromTestCase(TestCase))
+    br = BeautifulReport(suite)
+    br.report(filename='sourceManage.html', description='测试报告',
+              report_dir='/Users/sjk/workspace/sjk/python/auto/testReport')

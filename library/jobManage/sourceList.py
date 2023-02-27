@@ -305,6 +305,19 @@ class TestCase(unittest.TestCase):
         except Exception as e:
             logging.exception(e)
 
+    def test_graininess_count(self):
+        try:
+            self.driver.find_element(By.ID, 'tab-resource').click()
+            time.sleep(1)
+            operationItems = self.driver.find_elements(By.XPATH,
+                                                       '//div[contains(@class, "form-section") and  contains(@class, "form-section-resource")]')
+
+            count = self.driver.find_element(By.ID, 'tab-resource').text.replace('细颗粒度（', '').replace('）', '')
+            self.assertEqual(len(operationItems), int(count), '颗粒度计数校验成功')
+
+        except Exception as e:
+            logging.exception(e)
+
     def tearDown(self):
         self.driver.quit()
 

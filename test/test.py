@@ -1,7 +1,7 @@
 from login import login
 from sysManage import accountManage, applicationManage, directoryManage, orgManage, roleManage, sourceManage
 from tabSwitch import tabSwitch
-from library.jobManage import sourceList
+from library.jobManage import graininess
 
 import unittest
 from BeautifulReport import BeautifulReport
@@ -31,7 +31,7 @@ def report_all():
 
 
 if __name__ == '__main__':
-    report('sourceList.html', sourceList.TestCase)
+    report('sourceList.html', graininess.TestCase)
     # report('accountManage.html', accountManage.TestCase)
     # report('applicationManage.html', applicationManage.TestCase)
     # report('directoryManage.html', directoryManage.TestCase)

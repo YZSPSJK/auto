@@ -34,15 +34,11 @@ class TestCase(unittest.TestCase):
         try:
             self.driver.find_element(By.XPATH, '//span[text()="编辑"]').click()
             time.sleep(1)
-            sectionTitle = self.driver.find_element(By.XPATH, '//div[@class="section-title" and text() = " 工作区 "]')
-            baseInfo = sectionTitle.find_elements(By.XPATH, '//div[@class="workbench-content"]')[0]
-
-            requiredFormItemList = baseInfo.find_elements(By.XPATH,
-
-                                                          '//div[contains(@class, "el-form-item") and  contains(@class, "is-required")]')
+            baseInfo = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[0]
+            form = baseInfo.find_element(By.CLASS_NAME, 'form')
 
             labelValue = {}
-            for formItem in requiredFormItemList:
+            for formItem in form.find_elements(By.CSS_SELECTOR, '.el-form-item.is-required'):
                 label = formItem.find_element(By.CLASS_NAME, 'el-form-item__label').text
                 content = formItem.find_element(By.CSS_SELECTOR, '.el-form-item__content')
                 elInput = content.find_element(By.CSS_SELECTOR, 'div:first-child')
@@ -72,7 +68,8 @@ class TestCase(unittest.TestCase):
                     time.sleep(1)
                     selectOption = self.driver.find_elements(By.XPATH,
                                                              '//div[contains(@class, "el-select-dropdown") and  contains(@class, "el-popper")]')
-                    selectItem = selectOption[6].find_elements(By.CSS_SELECTOR, '.el-select-dropdown__item')[0]
+                    selectItem = \
+                    selectOption[len(selectOption) - 1].find_elements(By.CSS_SELECTOR, '.el-select-dropdown__item')[0]
                     selectItem.click()
                     labelValue[label] = selectItem.find_element(By.TAG_NAME, 'span').text
                     time.sleep(1)
@@ -91,10 +88,10 @@ class TestCase(unittest.TestCase):
             time.sleep(1)
             self.driver.find_element(By.XPATH, '//span[text()="同步"]').click()
             time.sleep(1)
-            requiredFormItemList = baseInfo.find_elements(By.XPATH,
-                                                          '//div[contains(@class, "el-form-item") and  contains(@class, "is-required")]')
 
-            for formItem in requiredFormItemList:
+            baseInfo = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[0]
+            form = baseInfo.find_element(By.CLASS_NAME, 'form')
+            for formItem in form.find_elements(By.CSS_SELECTOR, '.el-form-item.is-required'):
                 isTextarea = True
                 try:
                     formItem.find_element(By.CLASS_NAME, 'el-textarea__inner')
@@ -117,7 +114,6 @@ class TestCase(unittest.TestCase):
                                  '测试' + label.replace(':', '') + '表单编辑功能成功!')
         except Exception as e:
             logging.exception(e)
-
 
     def tearDown(self):
         self.driver.quit()

@@ -34,17 +34,15 @@ class TestCase(unittest.TestCase):
         try:
             self.driver.find_element(By.ID, 'tab-resource').click()
             time.sleep(1)
-            formContainer = self.driver.find_elements(By.XPATH, '//div[@class ="form-container"]')[0]
-            firstForm = formContainer.find_elements(By.CSS_SELECTOR, '.form-section.form-section-resource')[0]
-            firstForm.find_element(By.CLASS_NAME,'el-icon-edit').click()
-            time.sleep(1)
             graininess = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[1]
-            requiredFormItemList = self.driver.find_elements(By.XPATH,
-                                                            '//div[contains(@class, "el-form-item") and  contains(@class, "is-required")]')
+            formContainerList = graininess.find_elements(By.CLASS_NAME, 'form-container')
+            formContainer = formContainerList[0]
+            firstForm = formContainer.find_elements(By.CSS_SELECTOR, '.form-section.form-section-resource')[0]
+            firstForm.find_element(By.CLASS_NAME, 'el-icon-edit').click()
+            time.sleep(1)
 
             labelValue = {}
-            for formIndex in range(12, 20):
-                formItem = requiredFormItemList[formIndex]
+            for formItem in firstForm.find_elements(By.CSS_SELECTOR, '.el-form-item.is-required'):
 
                 label = formItem.find_element(By.CLASS_NAME, 'el-form-item__label').text
                 content = formItem.find_element(By.CSS_SELECTOR, '.el-form-item__content')
@@ -85,7 +83,8 @@ class TestCase(unittest.TestCase):
                     time.sleep(1)
                     selectOption = self.driver.find_elements(By.XPATH,
                                                              '//div[contains(@class, "el-select-dropdown") and  contains(@class, "el-popper")]')
-                    selectItem = selectOption[len(selectOption)-1].find_elements(By.CSS_SELECTOR, '.el-select-dropdown__item')[0]
+                    selectItem = \
+                    selectOption[len(selectOption) - 1].find_elements(By.CSS_SELECTOR, '.el-select-dropdown__item')[0]
                     selectItem.click()
                     labelValue[label] = selectItem.find_element(By.TAG_NAME, 'span').text
                     time.sleep(1)
@@ -107,11 +106,13 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.XPATH, '//span[text()="同步"]').click()
             time.sleep(1)
 
-            self.driver.find_elements(By.XPATH, '//i[@class = "el-icon-arrow-down"]')[0].click()
-            requiredFormItemList = graininess.find_elements(By.XPATH,
-                                                            '//div[contains(@class, "el-form-item") and  contains(@class, "is-required")]')
-            for formIndex in range(12, 20):
-                formItem = requiredFormItemList[formIndex]
+            graininess = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[1]
+            formContainerList = graininess.find_elements(By.CLASS_NAME, 'form-container')
+            formContainer = formContainerList[0]
+            firstForm = formContainer.find_elements(By.CSS_SELECTOR, '.form-section.form-section-resource')[0]
+            firstForm.find_element(By.CLASS_NAME, 'el-icon-arrow-down').click()
+            time.sleep(1)
+            for formItem in firstForm.find_elements(By.CSS_SELECTOR, '.el-form-item.is-required'):
                 label = formItem.find_element(By.CLASS_NAME, 'el-form-item__label').text
                 content = formItem.find_element(By.CSS_SELECTOR, '.el-form-item__content')
 
@@ -225,8 +226,8 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.ID, 'tab-resource').click()
             time.sleep(1)
             graininess = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[1]
-            text = graininess.find_elements(By.CLASS_NAME,'form-container')[0]
-            table = graininess.find_elements(By.CLASS_NAME,'form-container')[1]
+            text = graininess.find_elements(By.CLASS_NAME, 'form-container')[0]
+            table = graininess.find_elements(By.CLASS_NAME, 'form-container')[1]
 
             textItems = text.find_elements(By.CSS_SELECTOR, '.form-section.form-section-resource')
             tableItems = table.find_elements(By.CSS_SELECTOR, '.form-section.form-section-resource')
@@ -252,7 +253,9 @@ class TestCase(unittest.TestCase):
             self.driver.find_element(By.XPATH, '//span[text()="框选"]').click()
             time.sleep(1)
 
-            canvas = self.driver.find_elements(By.XPATH, '//div[contains(@class, "cropper-drag-box") and  contains(@class, "cropper-crop")]')[0]
+            canvas = self.driver.find_elements(By.XPATH,
+                                               '//div[contains(@class, "cropper-drag-box") and  contains(@class, "cropper-crop")]')[
+                0]
             actions = ActionChains(self.driver).move_to_element(canvas)
             actions.perform()
             time.sleep(1)
@@ -260,8 +263,9 @@ class TestCase(unittest.TestCase):
             pyautogui.dragTo(250, 450, duration=0.5, button='left')
             time.sleep(1)
             self.driver.find_elements(By.XPATH,
-                                      '//div[contains(@class, "item-panel") and  contains(@class, "el-icon-check")]')[0].click()
-            time.sleep(1)
+                                      '//div[contains(@class, "item-panel") and  contains(@class, "el-icon-check")]')[
+                0].click()
+            time.sleep(2)
             try:
                 message = self.driver.find_element(By.CLASS_NAME, 'el-message__content').text
             except Exception as e:

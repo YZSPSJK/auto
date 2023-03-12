@@ -12,10 +12,10 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         chrome_options = Options()
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
+        # chrome_options.add_argument('--headless')
+        # chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument("--window-size=1920,1080")
-        s = Service('D:/python/python/chromedriver.exe')
+        s = Service('D:/autotest/chromedriver.exe')
         # s = Service('/Users/sjk/workspace/sjk/python/chromedriver')
         self.driver = webdriver.Chrome(service=s, options=chrome_options)
         self.driver.get('http://175.27.232.12:8143/skyrim/#/home')
@@ -30,7 +30,7 @@ class TestCase(unittest.TestCase):
             passwordInput.clear()
             passwordInput.send_keys('123456WTW')
             self.driver.find_element(By.CLASS_NAME, 'el-button').click()
-            time.sleep(2)
+            time.sleep(3)
             sidebarTitle = self.driver.find_element(By.CLASS_NAME, 'sidebar-title').text
         except Exception as e:
             sidebarTitle = ''
@@ -74,4 +74,4 @@ if __name__ == '__main__':
     loader = unittest.TestLoader()
     suite.addTest(loader.loadTestsFromTestCase(TestCase))
     br = BeautifulReport(suite)
-    br.report(filename='login.html', description='测试报告', report_dir='/Users/sjk/workspace/sjk/python/auto/testReport')
+    br.report(filename='login.html', description='测试报告', report_dir='D:/autotest/testReport')

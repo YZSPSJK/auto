@@ -24,15 +24,15 @@ class TestCase(unittest.TestCase):
         self.driver.get('http://146.56.203.127:8143/library-test/home')
         self.driver.add_cookie(
             {'domain': '146.56.203.127', 'httpOnly': False, 'name': 'library_admin_token', 'path': '/', 'secure': False,
-             'value': 'Bearer%20eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiMTAwMyJdLCJ1c2VyX25hbWUiOiJ0ZXN0dXNlciIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2NzkwNjI3NjksImF1dGhvcml0aWVzIjpbIlJPTEVfUk9MRTAwMSIsIlJPTEVfQURNSU4iXSwianRpIjoiMzE1OWQwYjEtNDBjNy00MDliLTgwNWMtZDc4MTRjN2Q0ZjUyIiwiY2xpZW50X2lkIjoibWVzc2FnaW5nLWNsaWVudCIsImFkZGl0aW9uIjpudWxsfQ.OU1kgjeKnQwsKfqw9X7R-JNzGrGwZrhROhzvwGFsVqgI6lsEvZ2pvHPQm6KR8uscmNIkqqi6z9QTw7sVGdPrEPG2VSwnofgZJk7D8071ou4v-4V76oj36nZmSjnypnb4rI6cwU5yNMOIxlZUYhSciKCN_8UbW5MIRaRnt_U3ckQCXge4xYKLTf_ryYBGGhoqqO7ETnD-fitifuh-wHoIdMvKs0M2ZateZFjfsg8kQWUOHBoGvHH54ak_NwwAEipTixTEaouTzDEtfxyTStxcICA50D5ZQstMyRVU3yksvLje-7Gazqcu6Lo2QcHt4iBAw6KXoiiX9fQWu4bvDw_kBg'})
+             'value': 'Bearer%20eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiMTAwMyJdLCJ1c2VyX25hbWUiOiJ0ZXN0dXNlciIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2ODI0MjczMDksImF1dGhvcml0aWVzIjpbIlJPTEVfUk9MRTAwMSIsIlJPTEVfQURNSU4iXSwianRpIjoiMzZjODI4MWMtYzVmNC00MGM0LTgzOGEtMTM3NzhlNmEzMGIyIiwiY2xpZW50X2lkIjoibWVzc2FnaW5nLWNsaWVudCIsImFkZGl0aW9uIjpudWxsfQ.CAJ3vuakeW70HPRQRYSaFFrRGItR6wf16ch0cPlUqXoUyLXnBfUALnpx3zIBbHIG78Jw7RJBBXWitbNVtcz32muW1QK2ngHWeZd0jbXM0WJM3WzIWPJPS2lnb_u059PWLb-c9-fR4uyxSt9Rd1zQ4TrlvCIMocYw76B9WpFjyD2jJxi7iEeJ_0A7a3us64WSBVwlAH1DZq8oJa00BEo8tAl_4CJVaTXGOHNKmB7Zjd0Me3TubhDaFSlxboOTJbNtfufBF0VpGTPYxU0fLC3wo2VH1U-UcFBKjg7BaGthmsXT--5TRVHN5p4buNdTtZKNKDAd1DfFag3irUw5PMA3vQ'})
         self.driver.refresh()
         time.sleep(2)
-        self.driver.get('http://146.56.203.127:8143/library-test/workbench/180010020230000012')
+        self.driver.get('http://146.56.203.127:8143/library-test/workbench/audio/180010020230000379')
         time.sleep(2)
 
     def test_base_info(self):
         try:
-            self.driver.find_element(By.XPATH, '//span[text()="编辑"]').click()
+            self.driver.find_elements(By.XPATH, '//span[text()="编辑"]')[1].click()
             time.sleep(1)
             baseInfo = self.driver.find_elements(By.XPATH, '//div[@class="workbench-content"]')[0]
             form = baseInfo.find_element(By.CLASS_NAME, 'form')
@@ -41,11 +41,19 @@ class TestCase(unittest.TestCase):
             for formItem in form.find_elements(By.CSS_SELECTOR, '.el-form-item.is-required'):
                 label = formItem.find_element(By.CLASS_NAME, 'el-form-item__label').text
                 content = formItem.find_element(By.CSS_SELECTOR, '.el-form-item__content')
+                isSpan = False
+                try:
+                    content.find_element(By.CSS_SELECTOR, 'div:first-child')
+                except Exception as e:
+                    isSpan = True
+
+                if isSpan:
+                    continue
                 elInput = content.find_element(By.CSS_SELECTOR, 'div:first-child')
 
                 isSelect = True
                 try:
-                    elInput.find_element(By.CSS_SELECTOR, 'div:first-child')
+                    elInput.find_element(By.CSS_SELECTOR, '.el-select')
                 except Exception as e:
                     isSelect = False
 
@@ -62,7 +70,10 @@ class TestCase(unittest.TestCase):
                     isTextarea = False
                 if isSelect:
                     self.driver.execute_script("arguments[0].scrollIntoView();", elInput)
-                    content.find_element(By.CLASS_NAME, 'el-icon-circle-close').click()
+                    try:
+                        content.find_element(By.CLASS_NAME, 'el-icon-circle-close').click()
+                    except Exception as e:
+                        print(e)
                     time.sleep(1)
                     elInput.find_element(By.CLASS_NAME, 'el-input__suffix-inner').click()
                     time.sleep(1)
@@ -103,6 +114,16 @@ class TestCase(unittest.TestCase):
                 except Exception as e:
                     isSelectTag = False
                 label = formItem.find_element(By.CLASS_NAME, 'el-form-item__label').text
+
+                content = formItem.find_element(By.CSS_SELECTOR, '.el-form-item__content')
+                isSpan = False
+                try:
+                    content.find_element(By.CSS_SELECTOR, 'div:first-child')
+                except Exception as e:
+                    isSpan = True
+                if isSpan:
+                    continue
+
                 currentValue = ''
                 if isTextarea:
                     currentValue = formItem.find_element(By.CLASS_NAME, 'el-textarea__inner').get_attribute('value')
